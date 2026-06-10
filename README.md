@@ -6,11 +6,11 @@ An end-to-end industrial automation pipeline combining **Computer Vision (YOLOv8
 
 ## 🌟 Key Features
 
-*   **Industrial Camera Integration:** Direct low-latency frame grabbing utilizing the Hikrobot MVS SDK via `ctypes`.
-*   **Real-time AI Inspection:** Object detection powered by custom-trained YOLOv8 to classify glass status (`Normal`, `NonBroken`, `Broken`).
-*   **Intelligent Delay Buffer:** Implements a time-window validation logic (`DECISION_TIME`) to prevent false triggers from momentary noise.
-*   **Thread/Stream-Safe Robot Execution:** Automatically pauses camera grabbing and flushes buffers during robotic actions to prevent frame lag and buffer overflow.
-*   **Dual-Mode CLI:** Includes a live production automation mode and a utility mode for real-time robotic coordinate calibration.
+* **Industrial Camera Integration:** Direct low-latency frame grabbing utilizing the Hikrobot MVS SDK via Windows `ctypes`.
+* **Real-time AI Inspection:** Object detection powered by custom-trained YOLOv8 to classify glass status into 2 distinct classes (`Broken` and `NonBroken`).
+* **Intelligent Delay Buffer:** Implements a time-window validation logic (`DECISION_TIME`) to prevent false triggers from temporary visual noise or motion.
+* **Thread/Stream-Safe Robot Execution:** Pauses camera grabbing and flushes buffers during robotic actions to prevent frame lag and buffer overflow.
+* **Dedicated Calibration Tool:** Includes a separate utility script (`get_pos.py`) to stream real-time coordinate changes for rapid physical setup.
 
 ---
 
@@ -30,100 +30,96 @@ An end-to-end industrial automation pipeline combining **Computer Vision (YOLOv8
 
 ---
 
-## 📋 Prerequisites & Project Structure
+## 📋 Project Structure & Prerequisites
 
-### 1. Hardware Dependencies
+### 1. File Structure
 
-* **Robotic Arm:** Dobot Magician (Connected via USB, e.g., `COM4`).
-* **Camera:** Hikrobot Industrial Camera (GigE or USB) with **MVS (Machine Vision Suite)** installed.
-
-### 2. Project Directory Setup
-
-Before running the project, ensure your workspace is structured as follows:
+Ensure your workspace directory looks like this before running the application:
 
 ```text
-├── MvImport/              # Copy this folder from your Hikrobot MVS Installation SDK
+├── MvImport/              # Hikrobot MVS Installation SDK folder
 │   ├── MvCameraControl_class.py
 │   └── ...
-├── best.pt                # Your custom-trained YOLOv8 weights file
-├── main.py                # The main application script
-└── requirements.txt       # Python library dependencies
+├── best.pt                # Trained YOLOv8 weights (Download via GitHub Releases)
+├── data.yaml              # Dataset configuration (2 classes: Broken, NonBroken)
+├── main.py                # Main automated production system
+├── get_pos.py             # Robotic arm coordinate calibration utility
+└── requirements.txt       # Python dependencies
 
 ```
 
-> ⚠️ **Important Note on Hikrobot SDK:** The script automatically attempts to locate the `MvCameraControl.dll` dynamic link library from the official MVS default installation paths (`C:\Program Files\Common Files\MVS\...`). Ensure MVS is fully installed on your Windows machine.
+### 2. Hardware Dependencies
+
+* **Robotic Arm:** Dobot Magician (Connected via USB, default port configured to `COM4`).
+* **Camera:** Hikrobot Industrial Camera (GigE or USB) with **MVS (Machine Vision Suite)** installed.
+
+> ⚠️ **Important SDK Note:** The code automatically looks for `MvCameraControl.dll` in Windows standard paths (`C:\Program Files\Common Files\MVS\...`). Make sure MVS is fully installed.
 
 ---
 
 ## 🚀 Installation & Setup
 
 1. **Clone the repository:**
-
 ```bash
-   git clone [https://github.com/yourusername/glass-sorting-system.git](https://github.com/yourusername/glass-sorting-system.git)
-   cd glass-sorting-system
+git clone [https://github.com/yourusername/glass-sorting-system.git](https://github.com/yourusername/glass-sorting-system.git)
+cd glass-sorting-system
 
 ```
+
 
 2. **Install Python dependencies:**
-
 ```bash
-   pip install -r requirements.txt
+pip install -r requirements.txt
 
 ```
+
+
 
 ---
 
-## 🎮 How to Use
+## 🎮 How to Run
 
-Run the main application script:
+### 1. Calibration & Setup (First-time deployment)
+
+Before running the sorting automation, you must map out your physical workspace coordinates:
+
+```bash
+python get_pos.py
+
+```
+
+* **Instructions:** Press and hold the black unlock button on the Dobot arm and manually move it to your picking point, home point, and drop bins.
+* The terminal will print the live `X, Y, Z, R` coordinates. Copy these values and update the coordinate variables inside `main.py`.
+
+### 2. Running the Sorting Automation
+
+Once calibrated, initiate the main real-time automated sorting system:
 
 ```bash
 python main.py
 
 ```
 
-You will be prompted with a dual-mode interactive menu:
-
-```text
-=======================================
-      GLASS DETECTION ROBOT SYSTEM     
-=======================================
-[1] Run Automated System
-[2] Calibration Mode (Read Robot Coordinates)
-=======================================
-👉 Select Mode (1 or 2): 
-
-```
-
-### Mode 1: Automated Production System
-
-* Activates the camera feed and AI pipeline.
-* Keeps track of detected glass objects. If an object remains stable for `3.0 seconds` (configurable), the robot arm engages to sort it to its respective bin (Broken vs. Non-Broken).
-* Press **`q`** on the camera window display to gracefully shut down the system.
-
-### Mode 2: Calibration Tool
-
-* A utility helper that tracks and streams live `X, Y, Z, R` spatial coordinates of the Dobot arm to the terminal.
-* Use this mode to manually position the arm to your pick/drop locations and copy the coordinates into the script variables (`PICK_DOWN`, `DROP_LEFT_HOVER`, etc.).
+* Select **`[1] Run Automated System`** from the terminal prompt menu.
+* The AI pipeline will start tracking objects. If a piece of glass is continuously detected as `Broken` or `NonBroken` for `3.0 seconds`, the robotic arm will automatically grab it and sort it into its designated zone.
+* Press **`q`** while focusing on the video window to gracefully disconnect and shut down the system.
 
 ---
 
-## ⚙️ Configuration & Customization
+## ⚙️ Configuration Tuning
 
-You can fine-tune system behaviors directly inside `main.py`:
+You can adjust parameters inside `main.py` to match your hardware setup:
 
 ```python
-# Hardware Ports
+# Hardware Port Configuration
 DOBOT_PORT = 'COM4' 
 
-# Time (seconds) the object must stay under the camera before picking
+# Stabilization window delay (in seconds)
 DECISION_TIME = 3.0 
 
-# Confidence thresholds customized per class label
+# Confidence threshold filters
 CONFIDENCE_THRESHOLDS = {
     "Broken": 0.25,    
-    "Normal": 0.25,    
     "NonBroken": 0.25  
 }
 
@@ -133,5 +129,5 @@ CONFIDENCE_THRESHOLDS = {
 
 ## 🛡️ Exception Handling & Safety
 
-* **Robust De-initialization:** The script wraps vital communication bindings inside `try...finally` structures. If an unhandled crash or a keyboard interruption (`Ctrl+C`) happens, it forces the vacuum suction cup off and closes all serial/camera communication pipelines safely.
-* **Thread Buffer Guard:** Halting camera grabbing during robotic movement prevents memory inflation and old-frame queuing, keeping your real-time processing strictly synchronized.
+* **Graceful Termination:** The script uses comprehensive `try...finally` blocks. If an unhandled error occurs or `Ctrl+C` is pressed, the system automatically turns off the vacuum suction cup and safely releases the camera handle and serial ports.
+* **Buffer Lock Mitigation:** Halting camera tracking during robotic operations protects memory buffers from queuing up stale frames, ensuring that when the robot finishes a task, the next camera frame processed is completely real-time.
