@@ -1,0 +1,13 @@
+names:
+- Broken
+- NonBroken
+nc: 2
+roboflow:
+  license: CC BY 4.0
+  project: glass-detection-zt6au
+  url: https://universe.roboflow.com/glass-classification/glass-detection-zt6au/dataset/1
+  version: 1
+  workspace: glass-classification
+test: ../test/images
+train: ../train/images
+val: ../valid/images

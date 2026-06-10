@@ -1,0 +1,88 @@
+# ==========================================
+# 🐍 Python Core & Environments
+# ==========================================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environments (แนะนำให้ใช้ .venv หรือ venv)
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# ==========================================
+# 🧠 AI & Machine Learning (YOLO / PyTorch)
+# ==========================================
+#Weights & Models (บล็อกไฟล์โมเดล ไม่ให้หนัก Git)
+*.pt
+*.onnx
+*.engine
+*.torchscript
+
+# Ultralytics / YOLO default folders
+datasets/
+runs/
+.ultralytics/
+
+# ==========================================
+# 📷 Hikrobot SDK & Local Libs
+# ==========================================
+# หากคุณไม่ต้องการอัปโหลดโฟลเดอร์ MvImport ขึ้น GitHub (แนะนำให้คนอื่นไปก๊อปเองจาก SDK)
+# ให้เอาเครื่องหมาย # หน้าบรรทัดล่างออกครับ:
+# MvImport/
+
+# ==========================================
+# ⚙️ Configuration & Secrets
+# ==========================================
+# บล็อกไฟล์ที่เก็บรหัสผ่าน พอร์ต หรือ API Key ต่างๆ
+.env
+.env.local
+.env.*.local
+config.json
+
+# ==========================================
+# 💻 IDEs & Editor Configurations
+# ==========================================
+# VS Code
+.vscode/
+!.vscode/extensions.json
+
+# PyCharm / JetBrains
+.idea/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# ==========================================
+# 🗑️ OS Generated Files
+# ==========================================
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store
