@@ -2,9 +2,9 @@
 
 ## Screenshots
 
-![glass-defect-sorting-system screenshot 1](/home/bestz/Projects/glass-defect-sorting-system/screenshot/IMG_1801.jpg)
+<p align="center"><img src="screenshot/IMG_1801.jpg" alt="glass-defect-sorting-system screenshot 1" width="100%"></p>
 
-![glass-defect-sorting-system screenshot 2](/home/bestz/Projects/glass-defect-sorting-system/screenshot/image2.jpg)
+<p align="center"><img src="screenshot/image2.jpg" alt="glass-defect-sorting-system screenshot 2" width="100%"></p>
 
 An end-to-end industrial automation pipeline combining **Computer Vision (YOLOv8)**, **Industrial Cameras (Hikrobot)**, and **Robotic Arms (Dobot Magician)** to inspect, classify, and sort glass products based on structural integrity.
 
