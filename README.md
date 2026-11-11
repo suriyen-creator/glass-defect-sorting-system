@@ -1,10 +1,16 @@
-# 🤖 Glass Defect Classification & Automated Sorting System
+# Glass Defect Classification & Automated Sorting System
+
+## Screenshots
+
+![glass-defect-sorting-system screenshot 1](/home/bestz/Projects/glass-defect-sorting-system/screenshot/IMG_1801.jpg)
+
+![glass-defect-sorting-system screenshot 2](/home/bestz/Projects/glass-defect-sorting-system/screenshot/image2.jpg)
 
 An end-to-end industrial automation pipeline combining **Computer Vision (YOLOv8)**, **Industrial Cameras (Hikrobot)**, and **Robotic Arms (Dobot Magician)** to inspect, classify, and sort glass products based on structural integrity.
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
 * **Industrial Camera Integration:** Direct low-latency frame grabbing utilizing the Hikrobot MVS SDK via Windows `ctypes`.
 * **Real-time AI Inspection:** Object detection powered by custom-trained YOLOv8 to classify glass status into 2 distinct classes (`Broken` and `NonBroken`).
@@ -14,7 +20,7 @@ An end-to-end industrial automation pipeline combining **Computer Vision (YOLOv8
 
 ---
 
-## 🏗️ System Architecture
+## System Architecture
 
 ```text
  ┌─────────────────┐      ┌─────────────┐      ┌─────────────────┐
@@ -30,7 +36,7 @@ An end-to-end industrial automation pipeline combining **Computer Vision (YOLOv8
 
 ---
 
-## 📋 Project Structure & Prerequisites
+## Project Structure & Prerequisites
 
 ### 1. File Structure
 
@@ -53,11 +59,11 @@ Ensure your workspace directory looks like this before running the application:
 * **Robotic Arm:** Dobot Magician (Connected via USB, default port configured to `COM4`).
 * **Camera:** Hikrobot Industrial Camera (GigE or USB) with **MVS (Machine Vision Suite)** installed.
 
-> ⚠️ **Important SDK Note:** The code automatically looks for `MvCameraControl.dll` in Windows standard paths (`C:\Program Files\Common Files\MVS\...`). Make sure MVS is fully installed.
+>  **Important SDK Note:** The code automatically looks for `MvCameraControl.dll` in Windows standard paths (`C:\Program Files\Common Files\MVS\...`). Make sure MVS is fully installed.
 
 ---
 
-## 🚀 Installation & Setup
+## Installation & Setup
 
 1. **Clone the repository:**
 ```bash
@@ -77,7 +83,7 @@ pip install -r requirements.txt
 
 ---
 
-## 🎮 How to Run
+## How to Run
 
 ### 1. Calibration & Setup (First-time deployment)
 
@@ -106,7 +112,7 @@ python main.py
 
 ---
 
-## ⚙️ Configuration Tuning
+## Configuration Tuning
 
 You can adjust parameters inside `main.py` to match your hardware setup:
 
@@ -127,7 +133,7 @@ CONFIDENCE_THRESHOLDS = {
 
 ---
 
-## 🛡️ Exception Handling & Safety
+## Exception Handling & Safety
 
 * **Graceful Termination:** The script uses comprehensive `try...finally` blocks. If an unhandled error occurs or `Ctrl+C` is pressed, the system automatically turns off the vacuum suction cup and safely releases the camera handle and serial ports.
 * **Buffer Lock Mitigation:** Halting camera tracking during robotic operations protects memory buffers from queuing up stale frames, ensuring that when the robot finishes a task, the next camera frame processed is completely real-time.
